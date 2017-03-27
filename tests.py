@@ -17,15 +17,19 @@ class TestBlink(unittest.TestCase):
   def test_events(self):
     b = Blink()
     b.connect()
-    network_id = b.networks[0]['id']
-    events = b.events(network_id)
+    events = b.events(b.networks[0])
     self.assertEqual(type(events), list)
+
+  def test_cameras(self):
+    b = Blink()
+    b.connect()
+    cameras = b.cameras(b.networks[0])
+    self.assertEqual(type(cameras), list)
 
   def test_download_video(self):
     b = Blink()
     b.connect()
-    network_id = b.networks[0]['id']
-    events = b.events(network_id)
+    events = b.events(b.networks[0])
     event = events[0]
     b.download_video(event)
 
@@ -37,6 +41,30 @@ class TestBlink(unittest.TestCase):
     events = b.events(network_id)
     event = events[0]
     b.download_thumbnail(event)
+
+  def test_sync_modules(self):
+    b = Blink()
+    b.connect()
+    sync_modules = b.sync_modules(b.networks[0])
+    print sync_modules
+
+  def _test_arm(self):
+    b = Blink()
+    b.connect()
+    print b.arm(b.networks[0])
+
+  def test_clients(self):
+    b = Blink()
+    print b.clients()
+
+  def test_regions(self):
+    b = Blink()
+    print b.regions()
+
+  def _test_health(self):
+    b = Blink()
+    print b.health()
+
 
 
 if __name__ == '__main__':
