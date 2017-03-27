@@ -1,4 +1,7 @@
-import io, json, os, requests, yaml
+from __future__ import print_function
+import io, json, os, requests, sys, yaml
+
+import dateutil.parser
 
 
 class Blink(object):
@@ -97,7 +100,7 @@ class Blink(object):
     self._connect_if_needed()
     resp = requests.get(self._path(event['video_url']), headers=self._auth_headers)
     return resp.content
-    
+
   def download_thumbnail(self, event):
     '''
       returns the jpg data as a file-like object
@@ -108,6 +111,36 @@ class Blink(object):
     resp = requests.get(thumbnail_url, headers=self._auth_headers)
     return resp.content
     
-    
-    
+  def archive(self, path):
+    self._connect_if_needed()
+    for network in self.networks:
+      network_dir = os.path.join(path, network['name'])
+      if not os.path.isdir(network_dir):
+        os.mkdir(network_dir)
+
+      already_downloaded = set()
+      for fn in os.listdir(network_dir):
+        if not fn.endswith('.mp4'): continue
+        fn = fn[:-4]
+        event_id = int(fn.split(' - ')[0])
+        already_downloaded.add(event_id)
+
+      events = self.events(network['id'])
+      for event in events:
+        if event['id'] in already_downloaded: continue
+        when = dateutil.parser.parse(event['created_at'])
+        event_fn = os.path.join(network_dir, '%s - %s @ %s.mp4' % (event['id'], event['camera_name'], when.strftime('%Y-%m-%d %I:%M:%S %p %Z')))
+        print('Saving:', event_fn)
+        mp4 = self.download_video(event)
+        with open(event_fn,'w') as f:
+          f.write(mp4)
+          
+
+def _main():        
+  args = sys.argv[1:]
+  if args[0]=='--archive':
+    Blink().archive(args[1])
+  
+if __name__=='__main__':
+  _main()
     
