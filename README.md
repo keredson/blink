@@ -31,3 +31,25 @@ $ python -m blink --archive path/to/archive_dir
 ```
 
 Typically this would be put into a cron job.
+
+## API
+|Function|Description|Implemented|Works|
+|--------|-----------|-----------|-----|
+|`connect()`|Client login to the Blink Servers. | yes | yes | 
+|`networks()`|Obtain information about the Blink networks defined for the logged in user. | yes | yes | 
+|`sync_modules(network)`|Obtain information about the Blink Sync Modules on the given network. | yes | yes | 
+|`arm(network)`|Arm the given network (start recording/reporting motion events). | yes | no | 
+|`disarm(network)`|Disarm the given network (stop recording/reporting motion events. | yes | no | 
+|`command_status()`|Get status info on the given command. | yes | unknown | 
+|`homescreen()`|Return information displayed on the home screen of the mobile client. | yes | yes | 
+|`events(network)`|Get events for a given network (sync module). | yes | yes | 
+|`download_video(event)`|Get a video clip from the events list. | yes | yes | 
+|`download_thumbnail(event)`|Get a thumbnail from the events list. | yes | no | 
+|`cameras(network)`|Gets a list of cameras. | yes | yes | 
+|`clients()`|Gets information about devices that have connected to the blink service. | yes | yes | 
+|`regions()`|Gets information about supported regions. | yes | yes | 
+|`health()`|Gets information about system health. | yes | yes | 
+|`capture_video(camera)`|Captures a new video for a camera. | no |  | 
+|`capture_thumbnail(camera)`|Captures a new thumbnail for a camera. | no |  | 
+|`unwatched_videos()`|Gets a list of unwatched videos. | no |  | 
+|`delete(video)`|Deletes a video. | no |  | 
