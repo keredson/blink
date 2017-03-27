@@ -21,4 +21,13 @@ me@somewhere.net: my_password
 Alternatively, you can init Blink like so:
 ```
 b = blink.Blink(email='me@somewhere.net', password='my_password')
+```
 
+## Archiving Video
+Blink eventually deletes old video clips.  If you want to archive your videos locally, run:
+
+```
+$ python -m blink --archive path/to/archive_dir
+```
+
+Typically this would be put into a cron job.
